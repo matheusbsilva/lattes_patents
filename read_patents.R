@@ -1,26 +1,20 @@
 library(xml2)
-library(dplyr)
-library(XML)
 
 # Define diretório padrão
 setwd("~/Documentos/ds4all/gcee/")
 
 # Caminho de todos os curriculos
-all.xmls <- list.files("teste/", full = TRUE)
+all.xmls <- list.files("curriculos/", full = TRUE)
 lista.patentes <- list()
 
 for (path.xml in all.xmls) {
-  lista.xml <- xmlToList(path.xml)
+  lista.xml <- read_xml(path.xml)
   
-  if(is.null(lista.xml[["PRODUCAO-TECNICA"]][["PATENTE"]])) next
+  # Busca pela TAG patente em todo o xml
+  patentes <- xml_find_all(lista.xml, "//PATENTE")
   
-  for (item in names(lista.xml[["PRODUCAO-TECNICA"]])) {
-    if (item == "PATENTE") {                        
-      lista.patentes[lista.xml[[".attrs"]][["NUMERO-IDENTIFICADOR"]]] <- list(lista.xml[["PRODUCAO-TECNICA"]][item])
-    }
+  if (length(patentes) != 0) {
+    lista.patentes[[xml_attrs(lista.xml)[["NUMERO-IDENTIFICADOR"]]]] <- as_list(patentes)
   }
-  
-  #lista.patentes[lista.xml[[".attrs"]][["NUMERO-IDENTIFICADOR"]]] <- list(lista.xml[["PRODUCAO-TECNICA"]])
-  
 }
 
