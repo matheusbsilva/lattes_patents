@@ -13,6 +13,7 @@ for (path.xml in all.xmls) {
   # Busca pela TAG patente em todo o xml
   patentes <- xml_find_all(lista.xml, "//PATENTE")
   
+  #TODO: tratar casos em que o atributo NUMERO-IDENTIFICADOR está vazio
   if (length(patentes) != 0) {
     lista.patentes[[xml_attrs(lista.xml)[["NUMERO-IDENTIFICADOR"]]]] <- as_list(patentes)
   }
