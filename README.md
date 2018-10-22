@@ -6,3 +6,14 @@
 
 
 - Existem alguns XMLs com o atributo `NUMERO-IDENTIFICADOR`(ID do lattes) vazio
+
+## Próximos passos
+- 123 institutos de ciente
+- 74 responderam uma pesquisa, 
+
+- Checar patentes com co-autoria
+- Qual inct cada patente pertence
+- Checar unicidade do registro da patente
+- Lista de co-autores com nomes
+- Lista de co-autores com ids 
+- Escrever VAZIO para campos vazios
