@@ -1,92 +1,131 @@
-#install.packages("xml2")
-#install.packages("dplyr")
-#install.packages("XML")
-
-library(xml2)
-library(dplyr)
-library(XML)
-library(tidyverse)
 
 # Define diretório padrão
-# setwd("~/Documentos/ds4all/gcee/")
-# setwd("~/Documentos/UNB/2 18/ds/git/lattes_patents/")
+setwd("~/Documentos/ds4all/gcee/")
+setwd("~/Documentos/UNB/2 18/ds/git/lattes_patents/")
 
-# Caminho de todos os curriculos
-# all.xmls <- list.files("curriculos/", full = TRUE)
-all.xmls <- list.files("teste/", full = TRUE)
-lista.patentes <- list()
 
-for (path.xml in all.xmls) {
-  lista.xml <- read_xml(path.xml)
+library(XML)
+setwd("~/Documentos/ds4all/gcee/teste/")
 
-  # Busca pela TAG patente em todo o xml
-  patentes <- xml_find_all(lista.xml, "//PATENTE")
+file_path <- "0021199964477362.xml"
+file <- xmlParse(file_path)
+root <- xmlRoot(file)
 
-  #TODO: tratar casos em que o atributo NUMERO-IDENTIFICADOR está vazio
-  if (length(patentes) != 0) {
-    lista.patentes[[xml_attrs(lista.xml)[["NUMERO-IDENTIFICADOR"]]]] <- as_list(patentes)
+patentes <- root[["PRODUCAO-TECNICA"]]["PATENTE", all = TRUE]
+nome_autores <- NULL
+nome_citacao_autores <- NULL
+ordem_autores <- list()
+id_autores <- list()
+df_pat <- data.frame()
+for (patente in patentes) {
+  patentes_autores <- patente["AUTORES", all = TRUE]
+  for (autor in patentes_autores) {
+    nome_completo <- xmlAttrs(autor)[["NOME-COMPLETO-DO-AUTOR"]]
+    nome_citacao <- xmlAttrs(autor)[["NOME-PARA-CITACAO"]]
+    ordem <- xmlAttrs(autor)[["ORDEM-DE-AUTORIA"]]
+    idcnpq <- xmlAttrs(autor)[["NRO-ID-CNPQ"]]
+    
+    if (nome_completo != "") {
+      if (!is.null(nome_autores)) {
+        nome_autores <- paste(nome_autores, nome_completo, sep = "; ")
+      }
+      else{
+        nome_autores <- paste(nome_completo, sep = "; ")
+      }
+    }
+    else
+      nome_autores <- cat(nome_autores, "VAZIO", sep = "; ")
+    
+    if (nome_citacao != "") {
+      if (!is.null(nome_citacao_autores)) {
+        nome_citacao_autores <-
+          paste(nome_citacao_autores, nome_citacao, sep = "; ")
+      }
+      else{
+        nome_citacao_autores <- paste(nome_citacao, sep = "; ")
+      }
+    }
+    else{
+      nome_citacao_autores <- cat(nome_citacao_autores, "VAZIO", sep = "; ")
+    }
+    
+    
+    if (ordem != "") {
+      ordem_autores <- c(ordem_autores, ordem)
+    }
+    else
+      ordem_autores <- c(ordem_autores, "VAZIO")
+    
+    if (idcnpq != "") {
+      id_autores <- c(id_autores, idcnpq)
+    }
+    else
+      id_autores <- c(id_autores, "VAZIO")
+    
   }
+  
+  df_aux <- data.frame(
+    # Informações básicas
+    id_lattes = gsub(".xml", "", file_path),
+    nome_completo = xmlAttrs(root[["DADOS-GERAIS"]])[["NOME-COMPLETO"]],
+    id_patente = xmlAttrs(patente[["DETALHAMENTO-DA-PATENTE"]][["REGISTRO-OU-PATENTE"]])[["CODIGO-DO-REGISTRO-OU-PATENTE"]],
+    
+    # TAG: DADOS-BASICOS-DA-PATENTE
+    titulo_patente = xmlAttrs(patente[["DADOS-BASICOS-DA-PATENTE"]])[["TITULO"]],
+    ano_desenvolvimento = xmlAttrs(patente[["DADOS-BASICOS-DA-PATENTE"]])[["ANO-DESENVOLVIMENTO"]],
+    pais = xmlAttrs(patente[["DADOS-BASICOS-DA-PATENTE"]])[["PAIS"]],
+    meio_de_divulgacao = xmlAttrs(patente[["DADOS-BASICOS-DA-PATENTE"]])[["MEIO-DE-DIVULGACAO"]],
+    flag_relevancia = xmlAttrs(patente[["DADOS-BASICOS-DA-PATENTE"]])[["FLAG-RELEVANCIA"]],
+    flag_potencial_inovacao = xmlAttrs(patente[["DADOS-BASICOS-DA-PATENTE"]])[["FLAG-POTENCIAL-INOVACAO"]],
+    
+    # TAG: DETALHAMENTO-DA-PATENTE
+    finalidade = xmlAttrs(patente[["DETALHAMENTO-DA-PATENTE"]])[["FINALIDADE"]],
+    instituicao_financiadora = xmlAttrs(patente[["DETALHAMENTO-DA-PATENTE"]])[["INSTITUICAO-FINANCIADORA"]],
+    categoria = xmlAttrs(patente[["DETALHAMENTO-DA-PATENTE"]])[["CATEGORIA"]],
+    
+    # TAG: DETALHAMENTO-DA-PATENTE > REGISTRO-OU-PATENTE
+    tipo_patente = xmlAttrs(patente[["DETALHAMENTO-DA-PATENTE"]][["REGISTRO-OU-PATENTE"]])[["TIPO-PATENTE"]],
+    #WARN: Informação duplicada, TITULO-PATENTE
+    titulo_patente_reg = xmlAttrs(patente[["DETALHAMENTO-DA-PATENTE"]][["REGISTRO-OU-PATENTE"]])[["TITULO-PATENTE"]],
+    data_pedido_de_deposito = xmlAttrs(patente[["DETALHAMENTO-DA-PATENTE"]][["REGISTRO-OU-PATENTE"]])[["DATA-PEDIDO-DE-DEPOSITO"]],
+    data_pedido_de_exame = xmlAttrs(patente[["DETALHAMENTO-DA-PATENTE"]][["REGISTRO-OU-PATENTE"]])[["DATA-DE-PEDIDO-DE-EXAME"]],
+    data_de_concessao = xmlAttrs(patente[["DETALHAMENTO-DA-PATENTE"]][["REGISTRO-OU-PATENTE"]])[["DATA-DE-CONCESSAO"]],
+    instituicao_deposito_registro = xmlAttrs(patente[["DETALHAMENTO-DA-PATENTE"]][["REGISTRO-OU-PATENTE"]])[["INSTITUICAO-DEPOSITO-REGISTRO"]],
+    numero_deposito_pct = xmlAttrs(patente[["DETALHAMENTO-DA-PATENTE"]][["REGISTRO-OU-PATENTE"]])[["NUMERO-DEPOSITO-PCT"]],
+    formato_data_deposito_pct = xmlAttrs(patente[["DETALHAMENTO-DA-PATENTE"]][["REGISTRO-OU-PATENTE"]])[["FORMATO-DATA-DEPOSITO-PCT"]],
+    data_deposito_pct = xmlAttrs(patente[["DETALHAMENTO-DA-PATENTE"]][["REGISTRO-OU-PATENTE"]])[["DATA-DEPOSITO-PCT"]],
+    nome_titular = xmlAttrs(patente[["DETALHAMENTO-DA-PATENTE"]][["REGISTRO-OU-PATENTE"]])[["NOME-DO-TITULAR"]],
+    nome_depositante = xmlAttrs(patente[["DETALHAMENTO-DA-PATENTE"]][["REGISTRO-OU-PATENTE"]])[["NOME-DO-DEPOSITANTE"]],
+    sta_validacao = xmlAttrs(patente[["DETALHAMENTO-DA-PATENTE"]][["REGISTRO-OU-PATENTE"]])[["STA-VALIDADO"]],
+    
+    # TAG: DETALHAMENTO-DA-PATENTE > HISTORICO-SITUACOES-PATENTE
+    descricao_situacao = xmlAttrs(patente[["DETALHAMENTO-DA-PATENTE"]][["HISTORICO-SITUACOES-PATENTE"]])[["DESCRICAO-SITUACAO-PATENTE"]],
+    data_situacao = xmlAttrs(patente[["DETALHAMENTO-DA-PATENTE"]][["HISTORICO-SITUACOES-PATENTE"]])[["DATA-SITUACAO-PATENTE"]],
+    status_situacao = xmlAttrs(patente[["DETALHAMENTO-DA-PATENTE"]][["HISTORICO-SITUACOES-PATENTE"]])[["STATUS-SITUACAO-PATENTE"]],
+    
+    # TAG: PALAVRAS-CHAVE
+    palavra_chave_1 = xmlAttrs(patente[["PALAVRAS-CHAVE"]])[["PALAVRA-CHAVE-1"]],
+    palavra_chave_2 = xmlAttrs(patente[["PALAVRAS-CHAVE"]])[["PALAVRA-CHAVE-2"]],
+    palavra_chave_3 = xmlAttrs(patente[["PALAVRAS-CHAVE"]])[["PALAVRA-CHAVE-3"]],
+    palavra_chave_4 = xmlAttrs(patente[["PALAVRAS-CHAVE"]])[["PALAVRA-CHAVE-4"]],
+    palavra_chave_5 = xmlAttrs(patente[["PALAVRAS-CHAVE"]])[["PALAVRA-CHAVE-5"]],
+    palavra_chave_6 = xmlAttrs(patente[["PALAVRAS-CHAVE"]])[["PALAVRA-CHAVE-6"]],
+    
+    # TAG: SETORES-DE-ATIVIDADE
+    setor_de_atividade_1 = xmlAttrs(patente[["SETORES-DE-ATIVIDADE"]])[["SETOR-DE-ATIVIDADE-1"]],
+    setor_de_atividade_2 = xmlAttrs(patente[["SETORES-DE-ATIVIDADE"]])[["SETOR-DE-ATIVIDADE-2"]],
+    setor_de_atividade_3 = xmlAttrs(patente[["SETORES-DE-ATIVIDADE"]])[["SETOR-DE-ATIVIDADE-3"]],
+    
+    # TAG: INFORMACOES-ADICIONAIS
+    descricao_info_adicionais = xmlAttrs(patente[["INFORMACOES-ADICIONAIS"]])[["DESCRICAO-INFORMACOES-ADICIONAIS"]],
+    
+    # AUTORES
+    nome_completo_autores = nome_autores,
+    nome_citacao_autores = nome_citacao_autores,
+    ordem_autoria_autores = I(list(ordem_autores)),
+    id_autores = I(list(id_autores)),
+    
+    stringsAsFactors = FALSE
+  )
+  df_pat <- rbind(df_pat, df_aux)
 }
-
-
-
-
-# Teste com um arquivo
-xmlobj_ds <- read_xml("teste/0021199964477362.xml")
-
-# Assim converte para DataFrame, mas tem que ver porque não ta vindo todas as informações corretas, como o numero de sequencia e a quantidade e os nomes dos autores
-
-df_items_ds <- data.frame(
-  # seq_prod   = xml_find_all( xmlobj_ds, ".//PATENTE" ) %>% xml_attr( "SEQUENCIA-PRODUCAO" ),
-  id_lattes = xml_find_all( xmlobj_ds, "." ) %>%  xml_attr( "NUMERO-IDENTIFICADOR" ),
-  nome_completo = xml_find_all( xmlobj_ds, "./DADOS-GERAIS" ) %>%  xml_attr( "NOME-COMPLETO" ),
-  titulo = xml_find_all( xmlobj_ds, ".//PATENTE/DADOS-BASICOS-DA-PATENTE" ) %>%  xml_attr( "TITULO" ),
-  ano_desenvolvimento = xml_find_all( xmlobj_ds, ".//PATENTE/DADOS-BASICOS-DA-PATENTE" ) %>% xml_attr("ANO-DESENVOLVIMENTO"),
-  pais = xml_find_all( xmlobj_ds, ".//PATENTE/DADOS-BASICOS-DA-PATENTE" ) %>% xml_attr("PAIS"),
-  flag_relevancia = xml_find_all( xmlobj_ds, ".//PATENTE/DADOS-BASICOS-DA-PATENTE" ) %>% xml_attr("FLAG-RELEVANCIA"),
-  titulo_ingles = xml_find_all( xmlobj_ds, ".//PATENTE/DADOS-BASICOS-DA-PATENTE" ) %>% xml_attr("TITULO-INGLES"),
-  flag_pontecial_inovacao = xml_find_all( xmlobj_ds, ".//PATENTE/DADOS-BASICOS-DA-PATENTE" ) %>% xml_attr("FLAG-POTENCIAL-INOVACAO"),
-  finalidade = xml_find_all( xmlobj_ds, ".//PATENTE/DETALHAMENTO-DA-PATENTE" ) %>% xml_attr("FINALIDADE"),
-  instituicao = xml_find_all( xmlobj_ds, ".//PATENTE/DETALHAMENTO-DA-PATENTE" ) %>% xml_attr("INSTITUICAO-FINANCIADORA"),
-  finalidade_ingles = xml_find_all( xmlobj_ds, ".//PATENTE/DETALHAMENTO-DA-PATENTE" ) %>% xml_attr("FINALIDADE-INGLES"),
-  categoria = xml_find_all( xmlobj_ds, ".//PATENTE/DETALHAMENTO-DA-PATENTE" ) %>% xml_attr("CATEGORIA"),
-  tipo_patente = xml_find_all( xmlobj_ds, ".//PATENTE/DETALHAMENTO-DA-PATENTE/REGISTRO-OU-PATENTE" ) %>% xml_attr("TIPO-PATENTE"),
-  id_patente = xml_find_all( xmlobj_ds, ".//PATENTE/DETALHAMENTO-DA-PATENTE/REGISTRO-OU-PATENTE" ) %>% xml_attr("CODIGO-DO-REGISTRO-OU-PATENTE"),
-  titulo_patente = xml_find_all( xmlobj_ds, ".//PATENTE/DETALHAMENTO-DA-PATENTE/REGISTRO-OU-PATENTE" ) %>% xml_attr("TITULO-PATENTE"),
-  data_pedido_deposito = xml_find_all( xmlobj_ds, ".//PATENTE/DETALHAMENTO-DA-PATENTE/REGISTRO-OU-PATENTE" ) %>% xml_attr("DATA-PEDIDO-DE-DEPOSITO"),
-  data_pedido_exame = xml_find_all( xmlobj_ds, ".//PATENTE/DETALHAMENTO-DA-PATENTE/REGISTRO-OU-PATENTE" ) %>% xml_attr("DATA-PEDIDO-DE-EXAME"),
-  data_concessao = xml_find_all( xmlobj_ds, ".//PATENTE/DETALHAMENTO-DA-PATENTE/REGISTRO-OU-PATENTE" ) %>% xml_attr("DATA-DE-CONCESSAO"),
-  instituicao_deposito_registro = xml_find_all( xmlobj_ds, ".//PATENTE/DETALHAMENTO-DA-PATENTE/REGISTRO-OU-PATENTE" ) %>% xml_attr("INSTITUICAO-DEPOSITO-REGISTRO"),
-  numero_deposito_pct = xml_find_all( xmlobj_ds, ".//PATENTE/DETALHAMENTO-DA-PATENTE/REGISTRO-OU-PATENTE" ) %>% xml_attr("NUMERO-DEPOSITO-PCT"),
-  formato_data_deposito_pct = xml_find_all( xmlobj_ds, ".//PATENTE/DETALHAMENTO-DA-PATENTE/REGISTRO-OU-PATENTE" ) %>% xml_attr("FORMATO-DATA-DEPOSITO-PCT"),
-  data_deposito_pct = xml_find_all( xmlobj_ds, ".//PATENTE/DETALHAMENTO-DA-PATENTE/REGISTRO-OU-PATENTE" ) %>% xml_attr("DATA-DEPOSITO-PCT"),
-  nome_do_titular = xml_find_all( xmlobj_ds, ".//PATENTE/DETALHAMENTO-DA-PATENTE/REGISTRO-OU-PATENTE" ) %>% xml_attr("NOME-DO-TITULAR"),
-  nome_do_depositante = xml_find_all( xmlobj_ds, ".//PATENTE/DETALHAMENTO-DA-PATENTE/REGISTRO-OU-PATENTE" ) %>% xml_attr("NOME-DO-DEPOSITANTE"),
-  sta_validado = xml_find_all( xmlobj_ds, ".//PATENTE/DETALHAMENTO-DA-PATENTE/REGISTRO-OU-PATENTE" ) %>% xml_attr("STA-VALIDADO"),
-  descricao_sistuacao_patente = xml_find_all( xmlobj_ds, ".//PATENTE/DETALHAMENTO-DA-PATENTE/HISTORICO-SITUACOES-PATENTE" ) %>% xml_attr("DESCRICAO-SITUACAO-PATENTE"),
-  data_situacao_patente = xml_find_all( xmlobj_ds, ".//PATENTE/DETALHAMENTO-DA-PATENTE/HISTORICO-SITUACOES-PATENTE" ) %>% xml_attr("DATA-SITUACAO-PATENTE"),
-  status_situacao_patente = xml_find_all( xmlobj_ds, ".//PATENTE/DETALHAMENTO-DA-PATENTE/HISTORICO-SITUACOES-PATENTE" ) %>% xml_attr("STATUS-SITUACAO-PATENTE"),
-  palavra_chave_1 = xml_find_all( xmlobj_ds, ".//PATENTE/PALAVRAS-CHAVE" ) %>% xml_attr("PALAVRA-CHAVE-1"),
-  palavra_chave_2 = xml_find_all( xmlobj_ds, ".//PATENTE/PALAVRAS-CHAVE" ) %>% xml_attr("PALAVRA-CHAVE-2"),
-  palavra_chave_3 = xml_find_all( xmlobj_ds, ".//PATENTE/PALAVRAS-CHAVE" ) %>% xml_attr("PALAVRA-CHAVE-3"),
-  palavra_chave_4 = xml_find_all( xmlobj_ds, ".//PATENTE/PALAVRAS-CHAVE" ) %>% xml_attr("PALAVRA-CHAVE-4"),
-  palavra_chave_5 = xml_find_all( xmlobj_ds, ".//PATENTE/PALAVRAS-CHAVE" ) %>% xml_attr("PALAVRA-CHAVE-5"),
-  palavra_chave_6 = xml_find_all( xmlobj_ds, ".//PATENTE/PALAVRAS-CHAVE" ) %>% xml_attr("PALAVRA-CHAVE-6"),
-  nome_grande_area_conhecimento = xml_find_all( xmlobj_ds, ".//PATENTE/AREAS-DO-CONHECIMENTO/AREA-DO-CONHECIMENTO-1" ) %>% xml_attr("NOME-GRANDE-AREA-DO-CONHECIMENTO"),
-  nome_area_conhecimento = xml_find_all( xmlobj_ds, ".//PATENTE/AREAS-DO-CONHECIMENTO/AREA-DO-CONHECIMENTO-1" ) %>% xml_attr("NOME-DA-AREA-DO-CONHECIMENTO"),
-  nome_sub_area_conhecimento = xml_find_all( xmlobj_ds, ".//PATENTE/AREAS-DO-CONHECIMENTO/AREA-DO-CONHECIMENTO-1" ) %>% xml_attr("NOME-DA-SUB-AREA-DO-CONHECIMENTO"),
-  nome_especialidade = xml_find_all( xmlobj_ds, ".//PATENTE/AREAS-DO-CONHECIMENTO/AREA-DO-CONHECIMENTO-1" ) %>% xml_attr("NOME-DA-ESPECIALIDADE"),
-  setor_atividade_1 = xml_find_all( xmlobj_ds, ".//PATENTE/SETORES-DE-ATIVIDADE" ) %>% xml_attr("SETOR-DE-ATIVIDADE-1"),
-  setor_atividade_2 = xml_find_all( xmlobj_ds, ".//PATENTE/SETORES-DE-ATIVIDADE" ) %>% xml_attr("SETOR-DE-ATIVIDADE-2"),
-  setor_atividade_3 = xml_find_all( xmlobj_ds, ".//PATENTE/SETORES-DE-ATIVIDADE" ) %>% xml_attr("SETOR-DE-ATIVIDADE-3"),
-  descricao_informacoes_adicionais = xml_find_all( xmlobj_ds, ".//PATENTE/INFORMACOES-ADICIONAIS" ) %>% xml_attr("DESCRICAO-INFORMACOES-ADICIONAIS"),
-  descricao_informacoes_adicionais_ingles = xml_find_all( xmlobj_ds, ".//PATENTE/INFORMACOES-ADICIONAIS" ) %>% xml_attr("DESCRICAO-INFORMACOES-ADICIONAIS-INGLES"),
-  #autor1 = xml_find_all( xmlobj_ds, ".//PATENTE/AUTORES" ) %>% xml_attr("NOME-COMPLETO-DO-AUTOR"),
-  stringsAsFactors = FALSE )
-
-# Area de conhecimento se tiver mais de um
-
-# Assim tem que colocar em lista os dados pedidos: autores, ids
-
-oddsetds <- xml_find_all(xmlobj_ds, ".//PATENTE") %>%
-  xml_children() %>% map(xml_attrs) %>% map_df(~as.list(.))
