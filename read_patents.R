@@ -1,11 +1,15 @@
+# install xls package
 
+# install.packages("xlsx")
 
 # Define diretório padrão
 setwd("~/Documentos/ds4all/gcee/")
-setwd("~/Documentos/UNB/2 18/ds/git/lattes_patents/")
+setwd("~/Documentos/UNB/2-18/ds/git/lattes_patents/")
 
 
 library(XML)
+library("xlsx")
+library(dplyr)
 
 # Função para validar xml attr do E-lattes
 Validate <- function (element, field) {
@@ -42,6 +46,7 @@ SemiColon <- function (field, target){
 }
 
 setwd("~/Documentos/ds4all/gcee/curriculos/")
+setwd("~/Documentos/UNB/2-18/ds/git/lattes_patents/curriculos")
 all.xmls <- list.files(".")
 df_pat <- data.frame()
 
@@ -62,7 +67,7 @@ for (path.xml in all.xmls) {
       nome_completo <- Validate(autor, "NOME-COMPLETO-DO-AUTOR")
       nome_citacao <- Validate(autor, "NOME-PARA-CITACAO")
       ordem <- Validate(autor, "ORDEM-DE-AUTORIA")
-      idcnpq <- Validate(autor, "NRO-ID-CNPQ")
+      # idcnpq <- Validate(autor, "NRO-ID-CNPQ")
   
       nome_autores <- SemiColon(nome_completo, nome_autores)
       nome_citacao_autores <- SemiColon(nome_citacao, nome_citacao_autores)
@@ -137,3 +142,12 @@ for (path.xml in all.xmls) {
     df_pat <- rbind(df_pat, df_aux)
   }
 }
+
+
+# Check unique patents id
+
+unique_patents_id <- df_pat %>% distinct(id_patente) %>% count()
+
+# Convert to .xls file 
+
+write.xlsx(df_pat, file="patentes.xlsx", sheetName="sheet1", col.names=TRUE, row.names=TRUE, append=FALSE)
