@@ -1,12 +1,24 @@
+# install xls package
 
+# install.packages("xlsx")
 
 # Define diretório padrão
+<<<<<<< HEAD
 setwd("~/Documentos/ds4all/gcee/curriculos/")
 #setwd("~/Documentos/UNB/2 18/ds/git/lattes_patents/")
 
 
 library(XML)
 library(xlsx)
+=======
+setwd("~/Documentos/ds4all/gcee/")
+setwd("~/Documentos/UNB/2-18/ds/git/lattes_patents/")
+
+
+library(XML)
+library("xlsx")
+library(dplyr)
+>>>>>>> 379c59f3bf102d4fdaf0c08c06c9b7045102d323
 
 # Função para validar xml attr do E-lattes
 Validate <- function (element, field) {
@@ -42,7 +54,12 @@ SemiColon <- function (field, target){
   target
 }
 
+<<<<<<< HEAD
 
+=======
+setwd("~/Documentos/ds4all/gcee/curriculos/")
+setwd("~/Documentos/UNB/2-18/ds/git/lattes_patents/curriculos")
+>>>>>>> 379c59f3bf102d4fdaf0c08c06c9b7045102d323
 all.xmls <- list.files(".")
 df_pat <- data.frame()
 
@@ -63,7 +80,7 @@ for (path.xml in all.xmls) {
       nome_completo <- Validate(autor, "NOME-COMPLETO-DO-AUTOR")
       nome_citacao <- Validate(autor, "NOME-PARA-CITACAO")
       ordem <- Validate(autor, "ORDEM-DE-AUTORIA")
-      idcnpq <- Validate(autor, "NRO-ID-CNPQ")
+      # idcnpq <- Validate(autor, "NRO-ID-CNPQ")
   
       nome_autores <- SemiColon(nome_completo, nome_autores)
       nome_citacao_autores <- SemiColon(nome_citacao, nome_citacao_autores)
@@ -139,11 +156,19 @@ for (path.xml in all.xmls) {
   }
 }
 
+# Check unique patents id
+
+unique_patents_id <- df_pat %>% distinct(id_patente) %>% count()
+
+# Convert to .xls file 
+
+write.xlsx(df_pat, file="patentes.xlsx", sheetName="sheet1", col.names=TRUE, row.names=TRUE, append=FALSE)
+
 path.ids <- "../Lista_IDLattes_patentes_membros_03102018.xlsx"
 df_ids <- read.xlsx(path.ids, sheetIndex = 1)
 colnames(df_ids)[colnames(df_ids)=="nro_id_cnpq"] <- "id_lattes"
 
-# Remove ids duplicados
+# Remove duplicated ids
 df_ids <- subset(df_ids, !duplicated(df_ids$id_lattes))
 
 result <- merge(df_ids, df_pat, by = "id_lattes")
@@ -151,3 +176,5 @@ result <- merge(df_ids, df_pat, by = "id_lattes")
 newers <- filter(result, ano_desenvolvimento >= 2010)
 incts <- data.frame(table(newers$inct))
 colnames(incts) <- c('inct', 'frequência')
+
+
