@@ -1,11 +1,12 @@
 
 
 # Define diretório padrão
-setwd("~/Documentos/ds4all/gcee/")
-setwd("~/Documentos/UNB/2 18/ds/git/lattes_patents/")
+setwd("~/Documentos/ds4all/gcee/curriculos/")
+#setwd("~/Documentos/UNB/2 18/ds/git/lattes_patents/")
 
 
 library(XML)
+library(xlsx)
 
 # Função para validar xml attr do E-lattes
 Validate <- function (element, field) {
@@ -41,7 +42,7 @@ SemiColon <- function (field, target){
   target
 }
 
-setwd("~/Documentos/ds4all/gcee/curriculos/")
+
 all.xmls <- list.files(".")
 df_pat <- data.frame()
 
@@ -137,3 +138,16 @@ for (path.xml in all.xmls) {
     df_pat <- rbind(df_pat, df_aux)
   }
 }
+
+path.ids <- "../Lista_IDLattes_patentes_membros_03102018.xlsx"
+df_ids <- read.xlsx(path.ids, sheetIndex = 1)
+colnames(df_ids)[colnames(df_ids)=="nro_id_cnpq"] <- "id_lattes"
+
+# Remove ids duplicados
+df_ids <- subset(df_ids, !duplicated(df_ids$id_lattes))
+
+result <- merge(df_ids, df_pat, by = "id_lattes")
+
+newers <- filter(result, ano_desenvolvimento >= 2010)
+incts <- data.frame(table(newers$inct))
+colnames(incts) <- c('inct', 'frequência')
