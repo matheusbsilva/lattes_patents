@@ -228,4 +228,7 @@ wordcloud_key <- wordcloud2(df_key)
 # By INCT
 df_incts <- data.frame(table(result_after_2010$inct))
 colnames(df_incts) <- c('inct', 'qtd_patentes')
-# TODO DEFINE CHART
+
+# Unique patents
+df_pat$id_patente <- RemoveNonAlNum(df_pat$id_patente)
+treated_unique_pat <- df_pat %>% distinct(id_patente) %>% count()
