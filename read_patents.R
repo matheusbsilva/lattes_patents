@@ -41,6 +41,11 @@ SemiColon <- function (field, target){
   target
 }
 
+RemoveNonAlNum <- function (column){
+  regex <- "[^[:alnum:]]"
+  gsub(regex, "", column)
+}
+
 all.xmls <- list.files(".")
 df_pat <- data.frame()
 
