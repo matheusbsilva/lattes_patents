@@ -103,7 +103,7 @@ ReadPatents <- function(path) {
   rm(df_aux)
   
   df_pat$id_patente <- RemoveNonAlNum(df_pat$id_patente)
-  
+
   df_pat
 }
 
