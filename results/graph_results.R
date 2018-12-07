@@ -3,18 +3,18 @@
 library(ggplot2)
 
 FilterGreaterThan1996 <- function(df){
-  greater_1996 <- filter(df, ano_desenvolvimento >= 1996)
+  greater_1996 <- filter(df, ano >= 1996)
   greater_1996
 }
 
 FilterGreaterThan2010 <- function(df) {
-  result_after_2010 <- filter(df, ano_desenvolvimento >= 2010)
+  result_after_2010 <- filter(df, ano >= 2010)
   result_after_2010
 }
 
 GraphByYear <- function(df) {
   greater_1996 <- FilterGreaterThan1996(df)
-  year_df <- data.frame(table(greater_1996$ano_desenvolvimento), stringsAsFactors = FALSE)
+  year_df <- data.frame(table(greater_1996$ano), stringsAsFactors = FALSE)
   colnames(year_df) <- c('ano', 'qtd_patentes')
   
   year_bar <- ggplot(year_df, aes(x=ano, y=qtd_patentes)) +
@@ -25,13 +25,13 @@ GraphByYear <- function(df) {
 
 GraphByMeanYear <- function(df) {
   greater_1996 <- FilterGreaterThan1996(df)
-  before_2010 <- filter(greater_1996, ano_desenvolvimento >= 2002 & ano_desenvolvimento < 2010)
-  after_2010 <- filter(greater_1996, ano_desenvolvimento >= 2010 & ano_desenvolvimento < 2018)
+  before_2010 <- filter(greater_1996, ano >= 2002 & ano < 2010)
+  after_2010 <- filter(greater_1996, ano >= 2010 & ano < 2018)
   
-  before_2010 <- data.frame(table(before_2010$ano_desenvolvimento), stringsAsFactors = FALSE)
+  before_2010 <- data.frame(table(before_2010$ano), stringsAsFactors = FALSE)
   colnames(before_2010) <- c('ano', 'qtd_patentes')
   
-  after_2010 <- data.frame(table(after_2010$ano_desenvolvimento), stringsAsFactors = FALSE)
+  after_2010 <- data.frame(table(after_2010$ano), stringsAsFactors = FALSE)
   colnames(after_2010) <- c('ano', 'qtd_patentes')
   
   means_years <- data.frame("year" = c("2002-2009","2010-2017"), "media" = c(mean(before_2010$qtd_patentes), mean(after_2010$qtd_patentes)))
