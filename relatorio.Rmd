@@ -21,20 +21,85 @@ como publicações científicas, projetos de pesquisa e citações de outros pes
 
 No Brasil existe o Programa Institutos Nacionais de Ciência e Tecnologia (INCT) que possui metas que abrange todo território nacional como possibilidade de mobilizar e agregar os melhores grupos de pesquisa em áreas de fronteira da ciência e em áreas estratégicas para o desenvolvimento sustentável do país; impulsionar a pesquisa científica básica e fundamental competitiva internacionalmente; estimular o desenvolvimento de pesquisa científica e tecnológica de ponta associada a aplicações para promover a inovação e o espírito empreendedor, em estreita articulação com empresas inovadoras, nas áreas do Sistema Brasileiro de Tecnologia (Sibratec).
 
-
 Além de promover o avanço da competência nacional nas devidas áreas de atuação, criando ambientes atraentes e estimulantes para alunos talentosos de diversos níveis, do ensino médio ao pós-graduado, o Programa também se responsabilizará diretamente pela formação de jovens pesquisadores e apoiará a instalação e o funcionamento de laboratórios em instituições de ensino e pesquisa e empresas, proporcionando a melhor distribuição nacional da pesquisa científico-tecnológica, e a qualificação do país em áreas prioritárias para o seu desenvolvimento regional e nacional. Os Institutos Nacionais devem ainda estabelecer programas que contribuam para a melhoria do ensino de ciências e a difusão da ciência para o cidadão comum. [2]
 
-O objetivo desse projeto foi fazer um levantamento e análise de produção técnica de patentes dos pesquisadores que fazem parte dos INCTs.
+O objetivo desse projeto é realizar análises exploratórias para testar a viabilidade do uso desses dados como indicadores de potencial de inovação de grupos de pesquisa, em particular INCTs.
+
 
 
 ## Referencial Teórico
 
+### Registros e Patentes
+
+No Brasil, o Instituto Nacional da Propriedade Industrial (INPI), uma autarquia federal vinculada ao Ministério da Indústria, Comércio Exterior e Serviços, é responsável pela gestão do sistema brasileiro de concessão e garantia de direitos de propriedade intelectual para a indústria [site inpi]
+
+São serviços do INPI os registros de marcas, desenhos industriais, indicações geográficas, programas de computador e topografias de circuitos integrados, as concessões de patentes e as averbações de contratos de franquia e das distintas modalidades de transferência de tecnologia. Na economia do conhecimento, estes direitos se transformam em diferenciais competitivos, estimulando o surgimento constante de novas identidades e soluções técnicas. 
+
+No Currículo Lattes dos pesquisadores no Brasil é possível encontrar as patentes e registros na seção de produção técnica. 
+Para este trabalho foram analisados as seguintes produções:
+
+- Patentes e Registros
+- Patente
+- Software (Programa de Computador)
+- Cultivar Registrada
+- Cultivar Protegida
+- Marca
+- Topografia de Circuito Integrado
+- Desenho Industrial 
+
+
+#### Marcas
+
+Marca de produto ou serviço é aquela usada para distinguir produto ou serviço de outro idêntico, semelhante ou afim, de origem diversa; (art. 122 da Lei nº 9279/96 (Lei da Propriedade Industrial)
+
+#### Patentes
+
+Patente é uma invenção tecnológica que pode ser um processo ou produto. Também pode ser considerado melhorias no uso ou fabricação de objetos de uso prático, como utensílios e ferramentas, que pode ser uma Patente de Invenção (PI) ou Patente de Modelo de Utilidade (MU). 
+
+#### Desenho Industrial
+
+O registro de Desenho Industrial protege a configuração externa de um objeto tridimensional ou um padrão ornamental (bidimensional) que possa ser aplicado a uma superfície ou a um objeto. No Brasil, o Desenho Industrial é protegido mediante registro, diferente de outros países que utilizam patente. Este registro protege a aparência que diferencia o produto dos demais.
+
+#### 
+
+
+
+
+
+
+
+### Cultivares
+
+Cultivares são variedades cultivadas de plantas que são obtidas por meio de técnicas de melhoramento genético. (Bulsing et al., 2010, p. 259).
+
 
 ## Metodologia 
 
-A metodologia usada foi
+Para fazer a análise dos dados utilizou-se a metodologia CRISP-DM, que significa Processo Padrão Inter-
+indústrias para Mineração de Dados. é um modelo consolidado de processo para mineração de dados, que
+consiste em seis fases, que serão descritas logo em seguida. A metodologia CRISP-DM surgiu em 1996 com o
+objetivo de fornecer um processo para as pessoas com pouco experiência no campo de mineração de dados,
+garantindo assim uma qualidade na ap
 
-```{r metodology, echo=FALSE, fig.align='center', fig.cap="A caption", out.width = '60%', fig.pos = '!h'}
+### 1. Exploração
+
+Os dados foram recebidos no formato XML dos IDs
+
+### 2. Transformação
+
+xlm -> df merge
+id co auatores
+
+### 3. Carregamento
+
+xls 
+
+### 4. Análise e validação dos resultados
+
+### 5. Definição de novos critérios
+
+
+```{r metodology, echo=FALSE, fig.align='center', fig.cap="A caption", out.width = '60%', fig.pos = 'ht'}
 knitr::include_graphics("images/metodologia.png")
 ```
 
@@ -54,4 +119,10 @@ V. ; MUGNAINI, R. ; SILVA, G. S. . Minerando e Caracterizando Dados de Currícul
 Workshop on Social Network Analysis and Mining (BraSNAM), 2012, Curitiba, PR, Brazil. Anais do XXXII
 Congresso da Sociedade Brasileira de Computação, 2012.
 
-[2] http://inct.cnpq.br/sobre/
+[2] Institutos Nacionais de Ciência e Tecnologia <http://inct.cnpq.br/sobre/>. Acessado em 5 de Dezembro de 2018.
+
+[3] CARVALHO SIC; BIANCHETTI LB; REIFSCHNEIDER FJB. 2009. Registro e proteção de cultivares pelo setor público: a experiência do programa de melhoramento de Capsicum da Embrapa Hortaliças. Horticultura Brasileira 27: 135-138 <https://ainfo.cnptia.embrapa.br/digital/bitstream/item/186435/1/v27n2a02.pdf> (apaggar)
+
+[3] http://www.agricultura.gov.br/assuntos/insumos-agropecuarios/insumos-agricolas/protecao-de-cultivar/FAQ_SNPC_out2018.pdf
+
+Guia básico de topografia de circuito integrado
