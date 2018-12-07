@@ -40,7 +40,7 @@ Para este trabalho foram analisados as seguintes produções:
 
 - Patentes e Registros
 - Patente
-- Software (Programa de Computador)
+- Software/Programa de Computador
 - Cultivar Registrada
 - Cultivar Protegida
 - Marca
@@ -50,7 +50,18 @@ Para este trabalho foram analisados as seguintes produções:
 
 #### Marcas
 
-Marca de produto ou serviço é aquela usada para distinguir produto ou serviço de outro idêntico, semelhante ou afim, de origem diversa; (art. 122 da Lei nº 9279/96 (Lei da Propriedade Industrial)
+Marca de produto ou serviço é aquela usada para distinguir produto ou serviço de outro idêntico, semelhante ou afim, de origem diversa. De acordo com a legislação brasileira, são passíveis de registro como marca todos os sinais distintivos visualmente perceptíveis, não compreendidos nas proibições legais, conforme disposto no art. 122 da Lei nº 9279/96.
+
+A marca pode ser:
+
+- Nominativa: é aquela formada por palavras, neologismos e combinações de letras e números.  
+
+- Figurativa: constituída por desenho, imagem, ideograma, forma fantasiosa ou figurativa de letra ou algarismo, e palavras compostas por letras de alfabetos como hebraico, cirílico, árabe, etc.
+
+- Mista: combina imagem e palavra.
+
+- Tridimensional: pode ser considerada marca tridimensional a forma de um produto, quando é capaz de distingui-lo de outros produtos semelhantes.
+
 
 #### Patentes
 
@@ -60,17 +71,34 @@ Patente é uma invenção tecnológica que pode ser um processo ou produto. Tamb
 
 O registro de Desenho Industrial protege a configuração externa de um objeto tridimensional ou um padrão ornamental (bidimensional) que possa ser aplicado a uma superfície ou a um objeto. No Brasil, o Desenho Industrial é protegido mediante registro, diferente de outros países que utilizam patente. Este registro protege a aparência que diferencia o produto dos demais.
 
-#### 
+#### Software
 
+Programa de computador ou software é um conjunto de instruções ou declarações a serem usadas direta ou indiretamente por um computador, a fim de obter um determinado resultado. Ele é composto por um código-fonte, desenvolvido em alguma linguagem de programação.
 
+#### Topografia de Circuito Integrado
 
+Topografia de circuito integrado significa uma série de imagens relacionadas, construídas ou codificadas sob qualquer meio ou forma, que represente a configuração tridimensional das camadas que compõem um circuito integrado, e na qual cada imagem represente, no todo ou em parte, a disposição geométrica ou arranjos da superfície do circuito integrado em qualquer estágio de sua concepção ou manufatura. Em outras palavras, é o desenho de um chip.
 
-
-
-
-### Cultivares
+#### Cultivares
 
 Cultivares são variedades cultivadas de plantas que são obtidas por meio de técnicas de melhoramento genético. (Bulsing et al., 2010, p. 259).
+
+A Proteção de Cultivares - A proteção de cultivares é regida pela Lei nº 9.456/97 e
+coordenada pelo Serviço Nacional de Proteção de Cultivares (SNPC), que tem competência
+para acatar os pedidos e assegurar o direito de propriedade intelectual dos
+obtentores de novas combinações filogenéticas na forma de cultivares distintas,
+homogêneas e estáveis. A proteção dos direitos intelectuais sobre a cultivar é efetuada
+mediante a concessão de um certificado de proteção de cultivares. Este certificado é considerado um bem móvel e representa a única forma de proteção das espécies superiores de plantas (BRASIL, 2009b).
+Os requisitos necessários para a proteção de cultivares são os seguintes:
+
+• ser produto de melhoramento genético;
+• ser uma espécie passível de proteção;
+• não ter sido comercializada no exterior há mais de quatro anos ou há mais de seis anos, nos casos de videiras ou
+árvores;
+• ser distinta, homogênea e estável
+
+O registro de cultivares habilita a produção e comercialização de sementes no país, enquanto a proteção cobre as obtenções de novas cultivares produzidas pelos programas de melhoramento genético de instituições
+de pesquisa e assegura o direito de exploração comercial de uso (royalties), por um determinado período de tempo.
 
 
 ## Metodologia 
@@ -126,3 +154,6 @@ Congresso da Sociedade Brasileira de Computação, 2012.
 [3] http://www.agricultura.gov.br/assuntos/insumos-agropecuarios/insumos-agricolas/protecao-de-cultivar/FAQ_SNPC_out2018.pdf
 
 Guia básico de topografia de circuito integrado
+
+
+Propriedade Industrial - Ministério da Indústria, Comércio Exterior e Serviços. Disponível em: <http://www.inpi.gov.br/pedidos-em-etapas/entenda>. Acessado em: 6 de Dezembro de 2018.
