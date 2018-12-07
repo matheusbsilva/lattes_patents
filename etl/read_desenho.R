@@ -44,11 +44,11 @@ ReadDesenho <- function(path){
         
         # TAG: DADOS-BASICOS-DO-DESENHO-INDUSTRIAL
         titulo_marca = Validate(desenho[[DADOS_BASICOS]], "TITULO"),
-        ano_desenvolvimento = Validate(marca[[DADOS_BASICOS]], "ANO-DESENVOLVIMENTO"),
-        pais = Validate(marca[[DADOS_BASICOS]], "PAIS"),
-        flag_relevancia = Validate(marca[[DADOS_BASICOS]], "FLAG-RELEVANCIA"),
-        titulo_ingles = Validate(marca[[DADOS_BASICOS]], "TITULO-INGLES"),
-        flag_potencial_inovacao = Validate(marca[[DADOS_BASICOS]], "FLAG-POTENCIAL-INOVACAO"),
+        ano_desenvolvimento = Validate(desenho[[DADOS_BASICOS]], "ANO-DESENVOLVIMENTO"),
+        pais = Validate(desenho[[DADOS_BASICOS]], "PAIS"),
+        flag_relevancia = Validate(desenho[[DADOS_BASICOS]], "FLAG-RELEVANCIA"),
+        titulo_ingles = Validate(desenho[[DADOS_BASICOS]], "TITULO-INGLES"),
+        flag_potencial_inovacao = Validate(desenho[[DADOS_BASICOS]], "FLAG-POTENCIAL-INOVACAO"),
         
         # TAG: DETALHAMENTO-DO-DESENHO-INDUSTRIAL
         finalidade = Validate(desenho[[DETALHAMENTO]], "FINALIDADE"),
