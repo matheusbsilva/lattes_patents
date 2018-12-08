@@ -31,15 +31,14 @@ O objetivo desse projeto é realizar análises exploratórias para testar a viab
 
 ### Registros e Patentes
 
-No Brasil, o Instituto Nacional da Propriedade Industrial (INPI), uma autarquia federal vinculada ao Ministério da Indústria, Comércio Exterior e Serviços, é responsável pela gestão do sistema brasileiro de concessão e garantia de direitos de propriedade intelectual para a indústria [site inpi]
+No Brasil, o Instituto Nacional da Propriedade Industrial (INPI), uma autarquia federal vinculada ao Ministério da Indústria, Comércio Exterior e Serviços, é responsável pela gestão do sistema brasileiro de concessão e garantia de direitos de propriedade intelectual para a indústria [4]
 
-São serviços do INPI os registros de marcas, desenhos industriais, indicações geográficas, programas de computador e topografias de circuitos integrados, as concessões de patentes e as averbações de contratos de franquia e das distintas modalidades de transferência de tecnologia. Na economia do conhecimento, estes direitos se transformam em diferenciais competitivos, estimulando o surgimento constante de novas identidades e soluções técnicas. 
+São serviços do INPI os registros de marcas, desenhos industriais, indicações geográficas, programas de computador e topografias de circuitos integrados, as concessões de patentes e as averbações de contratos de franquia e das distintas modalidades de transferência de tecnologia. Na economia do conhecimento, estes direitos se transformam em diferenciais competitivos, estimulando o surgimento constante de novas identidades e soluções técnicas. [4]
 
 No Currículo Lattes dos pesquisadores no Brasil é possível encontrar as patentes e registros na seção de produção técnica. 
 Para este trabalho foram analisados as seguintes produções:
 
 - Patentes e Registros
-- Patente
 - Software/Programa de Computador
 - Cultivar Registrada
 - Cultivar Protegida
@@ -81,21 +80,15 @@ Topografia de circuito integrado significa uma série de imagens relacionadas, c
 
 #### Cultivares
 
-Cultivares são variedades cultivadas de plantas que são obtidas por meio de técnicas de melhoramento genético. (Bulsing et al., 2010, p. 259).
+Cultivares são variedades cultivadas de plantas que são obtidas por meio de técnicas de melhoramento genético. (apud Bulsing et al., 2010, p. 259). [3]
 
-A Proteção de Cultivares - A proteção de cultivares é regida pela Lei nº 9.456/97 e
-coordenada pelo Serviço Nacional de Proteção de Cultivares (SNPC), que tem competência
-para acatar os pedidos e assegurar o direito de propriedade intelectual dos
-obtentores de novas combinações filogenéticas na forma de cultivares distintas,
-homogêneas e estáveis. A proteção dos direitos intelectuais sobre a cultivar é efetuada
-mediante a concessão de um certificado de proteção de cultivares. Este certificado é considerado um bem móvel e representa a única forma de proteção das espécies superiores de plantas (BRASIL, 2009b).
 Os requisitos necessários para a proteção de cultivares são os seguintes:
 
 • ser produto de melhoramento genético;
 • ser uma espécie passível de proteção;
 • não ter sido comercializada no exterior há mais de quatro anos ou há mais de seis anos, nos casos de videiras ou
 árvores;
-• ser distinta, homogênea e estável
+• ser distinta, homogênea e estável.
 
 O registro de cultivares habilita a produção e comercialização de sementes no país, enquanto a proteção cobre as obtenções de novas cultivares produzidas pelos programas de melhoramento genético de instituições
 de pesquisa e assegura o direito de exploração comercial de uso (royalties), por um determinado período de tempo.
@@ -103,44 +96,65 @@ de pesquisa e assegura o direito de exploração comercial de uso (royalties), p
 
 ## Metodologia 
 
-Para fazer a análise dos dados utilizou-se a metodologia CRISP-DM, que significa Processo Padrão Inter-
-indústrias para Mineração de Dados. é um modelo consolidado de processo para mineração de dados, que
-consiste em seis fases, que serão descritas logo em seguida. A metodologia CRISP-DM surgiu em 1996 com o
-objetivo de fornecer um processo para as pessoas com pouco experiência no campo de mineração de dados,
-garantindo assim uma qualidade na ap
-
-### 1. Exploração
-
-Os dados foram recebidos no formato XML dos IDs
-
-### 2. Transformação
-
-xlm -> df merge
-id co auatores
-
-### 3. Carregamento
-
-xls 
-
-### 4. Análise e validação dos resultados
-
-### 5. Definição de novos critérios
+Para fazer a análise dos dados seguimos um processo que envolvia a participação ativa do cliente para o maior entendimento do contexto e dos dados que seriam relevantes para atingir o objetivo.
+Os dados trabalhados foram os currículos de pesquisadores que fazem parte dos INCTs. Os dados foram disponibilizados pelo
+cliente em formato XML, totalizando uma amostra 6.558 currículos.
+O processo ocorreu de forma iterativa e se deu início a etapa de exploração após o acesso aos arquivos, seguindo as etapas de extração e transformação dos dados para então realizar o carregamento em uma estrutura de dados padrão. Junto com o cliente é realizado a etapa de análise e validação dos resultados e a definição de novos critérios enquanto houvesse necessidade. A Figura 1 ilustra as etapas que foram seguidas para a realização deste trabalho.
 
 
-```{r metodology, echo=FALSE, fig.align='center', fig.cap="A caption", out.width = '60%', fig.pos = 'ht'}
+```{r metodology, echo=FALSE, fig.align='center', fig.cap="Etapas da metodologia", out.width = '60%', fig.pos = 'ht'}
 knitr::include_graphics("images/metodologia.png")
 ```
 
+É possível visualizar o repositório aberto em que foi realizado este trabalho: https://github.com/matheusbsilva/lattes_patents 
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+### 1. Exploração
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+Foram disponibilizados acesso à 6.558 currículos no formato em XML. Demandou tempo para o entendimento do formato de cada currículo que pode variar algumas _tags_ que depende do histórico e preenchimento de cada perfil. As _tags_ aparecem apenas quando são preenchidas ao menos um campo, desde que não seja obrigatório. Na Figura 2 é possível visualizar a organização macro dos arquivos. 
+
+```{r, echo=FALSE, fig.align='center', fig.cap="Organização de um currículo em XML", out.width = '20%', fig.pos = 'ht'}
+knitr::include_graphics("images/xml-formato.png")
+```
+
+O campo **produção técnica** foi explorado para a identificação de produção de patentes ou registros.
+A princípio não se tinha esse conhecimento sobre quais seriam as _tags_ que teriam as informações buscadas. 
+No primeiro ciclo desse processo a busca era por **patentes**, e então após trabalho manual de pesquisar nos arquivos foram encontradas as informações dos campos pedidos para o preenchimento dessas informações.
+Essa identificação facilitou a criação do código para a leitura das demais patentes. 
+Nas iterações do processo a requisição foi para a busca pelos outros tipos de patentes: marcas, topografia de circuito integrado, desenho industrial, software e cultivares. 
+Para cada um deles houve uma busca nos arquivo em busca da identificação das _tags_, já que só encontraria tais informações nos currículos que haviam cadastrados, o que no melhor dos casos muitos currículos teriam ou no pior nenhum, o que dependendo da forma da busca poderia resultar em retrabalho ou gasto de energia desnecessário. 
+Todas as patentes e registros foram encontradas na _tag_ produção técnica. 
+
+
+### 2. Extração
+
+No processo de extração foi necessário o entendimento de outros campos dos currículos visando a forma mais eficiente de extrair esses dados do XML, para então selecionar os dados relevantes para o estudo e descartar os demais.
+
+
+### 3. Transformação
+
+Nessa etapa acontece os tratamentos das colunas, normalização e agrupamento de dados. Após os tratamentos nos dados dos currículos, juntou as informações sobre os INCTs, visto que todos os pesquisadores fazem parte de algum INCT.
+
+### 4. Carregamento
+
+Os arquivos recebidos podem ter ou não as informações buscadas, assim, nessa etapa, os dados já tratados são exportados em um arquivo XLSX. Arquivo este que pôde ser enviado para que o cliente pudesse analisar e para facilitar a leitura dos arquivos XML. 
+
+### 5. Análise e validação dos resultados
+
+Análises exploratórias são realizadas e os resultados dessas buscas são compartilhadas em reuniões presenciais com o cliente que valida esses resultados, caso estejam condizentes, ou retorna uma sugestão sobre o processo ou resultados.
+
+### 6. Definição de novos critérios
+
+Após analisar os resultados da etapa anterior são definidos novos critérios de identificação dos potenciais de inovação faltantes.
+
 
 
 ## Conclusão
 
+Conclu
+
 
 ## Referências Bibliográficas
+
 
 [1] DIGIAMPIETRI, L. A. ; MENA-CHALCO, J. P. ; ALCÁZAR, J. J. P. ; TUESTA, E. F. ; DELGADO, K.
 V. ; MUGNAINI, R. ; SILVA, G. S. . Minerando e Caracterizando Dados de Currículos Lattes. In: Brazilian
@@ -149,11 +163,8 @@ Congresso da Sociedade Brasileira de Computação, 2012.
 
 [2] Institutos Nacionais de Ciência e Tecnologia <http://inct.cnpq.br/sobre/>. Acessado em 5 de Dezembro de 2018.
 
-[3] CARVALHO SIC; BIANCHETTI LB; REIFSCHNEIDER FJB. 2009. Registro e proteção de cultivares pelo setor público: a experiência do programa de melhoramento de Capsicum da Embrapa Hortaliças. Horticultura Brasileira 27: 135-138 <https://ainfo.cnptia.embrapa.br/digital/bitstream/item/186435/1/v27n2a02.pdf> (apaggar)
 
-[3] http://www.agricultura.gov.br/assuntos/insumos-agropecuarios/insumos-agricolas/protecao-de-cultivar/FAQ_SNPC_out2018.pdf
-
-Guia básico de topografia de circuito integrado
+[3] <http://www.agricultura.gov.br/assuntos/insumos-agropecuarios/insumos-agricolas/protecao-de-cultivar/FAQ_SNPC_out2018.pdf>. Acessado em 5 de Dezembro de 2018.
 
 
-Propriedade Industrial - Ministério da Indústria, Comércio Exterior e Serviços. Disponível em: <http://www.inpi.gov.br/pedidos-em-etapas/entenda>. Acessado em: 6 de Dezembro de 2018.
+[4] Propriedade Industrial - Ministério da Indústria, Comércio Exterior e Serviços. Disponível em: <http://www.inpi.gov.br/pedidos-em-etapas/entenda>. Acessado em: 6 de Dezembro de 2018.
