@@ -1,12 +1,14 @@
 ---
 title: "Relatorio Final"
 author: "Matheus Batista Silva e Naiara Andrade"
-date: "1 de dezembro de 2018"
+date: "7 de dezembro de 2018"
 output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+knitr::read_chunk('results/main.R')
+source('results/main.R')
 ```
 
 ## Introdução e Contextualização
@@ -146,11 +148,71 @@ Análises exploratórias são realizadas e os resultados dessas buscas são comp
 
 Após analisar os resultados da etapa anterior são definidos novos critérios de identificação dos potenciais de inovação faltantes.
 
+## Desenvolvimento
 
+Foram analisadas patentes de sete categorias diferentes, onde a distribuição da quantidade de dados resultante foi a seguinte:
+
+- Patentes gerais = 5433 registros
+- Patentes de Software = 4340 registros
+- Cultivar Registrado = 302 registros
+- Cultivar Protegido = 96 registros
+- Desenho Industrial = 76 registros
+- Marcas Registradas = 61 registros
+- Topografia de circuito integrado = 2 registros
+
+Aqui explora-se a distribuição das patentes no decorrer do ano, pode-se observar que houve uma crescente relevante no número de patentes nos três anos seguintes a 2010, ano de criação dos INCTs. Sendo que estes três anos são os que possuem o maior número de patentes de acordo com conjunto de dados, uma média de 581 patentes.
+
+```{r fig1, fig.height = 3, fig.width = 8}
+graph_by_year
+```
+
+Inclusive é possível observar que existe um aumento na média do número de patentes após 2010.
+
+```{r fig2, fig.height = 3, fig.width = 5}
+graph_by_mean_year
+```
+
+Para realizar uma análise mais contextualizada sobre as patentes, os próximos resultados apresentados levma em conta somente patentes a partir do **ano de 2010**, pois foi o ano de criação dos INCTS.
+
+Outra observação importante é a quantidade de patentes por países. Nesse gráfico não foi levado em conta o Brasil por ter claramente o maior número de patentes.
+
+```{r fig3, fig.height = 3, fig.width = 5, fig.height=5}
+graph_by_country
+```
+
+Aqui pode-se começar a observar a tendência dos temas das patentes analisadas, onde a maioria pertence ao grupo temático relacionado a Saúde.
+
+```{r fig4, fig.height = 3, fig.width = 5}
+graph_by_tematico
+```
+
+Para realizar uma exploração mais profunda sobre o objetivo geral das patentes analisadas, tomou-se como base as palavras chaves disponíveis em cada registro de patente. Ao agrupar essas palavras chaves e observar sua recorrência através de uma nuvem de palavras pode-se perceber que
+as temáticas giram em torno do tema saúde, apresentando como palavras chaves mais recorrentes 
+temas críticos como Alzheimer, Câncer e Aedes aegypti. Além disso existem temas relevantes 
+de outras áreas como Biotecnologia, Biodisel e Aplicações embarcadas. 
+
+```{r, echo=FALSE, fig.align='center', fig.cap="Nuvem de palavras chaves", out.width = '60%', fig.pos = 'ht'}
+knitr::include_graphics("images/nuvem.png")
+```
+
+Por fim foi analisado a quantidade de patentes agrupado por INCT. Foi disponilizado no gráfico
+os primeiros 10 INCTS com o maior número de patentes. A distribuição apresentada mostra o INCT
+em Medicina Assistida por Computação Científica como o grupo com a maior quantia de patentes.
+Comprovando as observações anteriores onde o tema saúde foi o mais recorrente nas informações
+analisadas.
+
+```{r fig5, fig.height = 3, fig.width = 8}
+graph_by_inct
+```
 
 ## Conclusão
 
-Conclu
+Durante o estudo houve um ganho de conhecimento sobre o que é patente e seus diferentes tipos, e como estes são representados no Lattes. Para realizar a extração das informações relevantes foi necessário muito trabalho manual durante a fase de exploração dos dados, pois não era claro como essa informação estaria armazenada nos currículos Lattes.
+
+Com a análise pode-se inferir que a maior parte das patentes fazem parte de pesquisas científicas relacionando saúde com ciência da computação. Isso mostra uma crescente evolução do setor no Brasil.
+
+Para trabalhos futuros pode ser realizado uma análise de fatores que identifiquem pesquisadores
+que estão propícios a gerar inovação tecnológica para o Brasil. E além disso incorporar a soluação implementada no sistema E-lattes a fim de contribuir com a informatização dos pesquisadores.
 
 
 ## Referências Bibliográficas

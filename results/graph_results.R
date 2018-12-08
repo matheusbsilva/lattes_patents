@@ -59,15 +59,16 @@ GraphByCountry <- function(df) {
   
 }
 
-GraphByCategory <- function(df) {
+GraphByTematico <- function(df) {
   result_after_2010 <- FilterGreaterThan2010(df)
-  # By category
-  pat_category <- data.frame(table(result_after_2010$categoria))
-  colnames(pat_category) <- c('categoria', 'qtd_patentes')
-  filtered_category <- filter(pat_category, qtd_patentes > 2 & categoria != "")
-  category_bar <- ggplot(filtered_category, aes(x=categoria, y=qtd_patentes)) +
+  df$grupo_tematico <- gsub('\\s', '', df$grupo_tematico)
+  pat_tematico <- data.frame(table(result_after_2010$grupo_tematico))
+  colnames(pat_tematico) <- c('grupo_tematico', 'qtd_patentes')
+  
+  category_bar <- ggplot(pat_tematico, aes(x=reorder(grupo_tematico, qtd_patentes), y=qtd_patentes)) +
     geom_bar(stat='identity', fill = '#0d627a') +
-    labs(title = "Patentes por categoria", x = "Categoria", y = "Número de patentes")
+    coord_flip() +
+    labs(title = "Patentes por grupo temático", x = "Grupo Temático", y = "Número de patentes")
 }
 
 CloudKeyWords <- function(df) {
@@ -84,4 +85,18 @@ CloudKeyWords <- function(df) {
   keyword_list <- keyword_list[keyword_list != ""]
   df_key <- data.frame(table(keyword_list))
   wordcloud_key <- wordcloud2(df_key) 
+}
+
+GraphTopNIncts <- function(df, n) {
+  result_after_2010 <- FilterGreaterThan2010(df)
+  df_incts <- data.frame(table(result_after_2010$inct))
+  colnames(df_incts) <- c('inct', 'qtd_patentes')
+  df_incts <- df_incts[order(df_incts$qtd_patentes, decreasing = TRUE),]
+  df_incts_top <- df_incts[1:n,]
+  
+  category_bar <- ggplot(df_incts_top, aes(x=reorder(inct, qtd_patentes), y=qtd_patentes)) +
+    geom_bar(stat='identity', fill = '#0d627a') +
+    coord_flip() +
+    labs(title = paste("Top", n, "Incts por quantidade de patentes"), x = "Inct", y = "Número de patentes")
+  
 }
