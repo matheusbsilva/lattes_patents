@@ -1,2 +1,5 @@
 .RData
 .Rhistory
+myenv/
+*.ipynb_checkpoints
+jupyter-notebooks/patentes
